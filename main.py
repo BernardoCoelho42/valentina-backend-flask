@@ -4,6 +4,7 @@ import openai
 import os
 import traceback
 import json
+from openai import OpenAIError
 
 app = Flask(__name__)
 CORS(app)  # libera CORS para qualquer origem
@@ -65,7 +66,7 @@ def jogar():
         print("❌ Validação:", ve)
         return jsonify({'erro': str(ve)}), 400
 
-    except openai.error.OpenAIError as e:
+    except OpenAIErroras e:
         print("❌ OpenAIError:", e)
         traceback.print_exc()
         return jsonify({'erro': f'Falha na OpenAI: {str(e)}'}), 500
