@@ -3,7 +3,7 @@ from flask_cors import CORS
 import openai
 import os
 import traceback
-from openai import OpenAIError
+from openai import OpenAIError, OpenAI
 
 app = Flask(__name__)
 CORS(app)  # libera CORS para qualquer origem
@@ -11,6 +11,7 @@ print("▶ Servidor Flask iniciado")
 
 # --- Chave da OpenAI ---
 openai.api_key = os.getenv("OPENAI_API_KEY") or "CHAVE_AQUI"
+client = OpenAI(api_key=openai.api_key)
 
 @app.before_request
 def log_request():
@@ -27,8 +28,7 @@ def jogar():
 
     try:
         print("▶ chamando /jogar()")
-        
-        # Captura segura dos dados JSON enviados pelo front-end
+
         data = request.get_json(force=True, silent=False)
         print("▶ Dados recebidos:", data)
 
@@ -51,16 +51,15 @@ def jogar():
         if acao == "mensagem" and mensagem:
             mensagens.append({"role": "user", "content": f"O jogador escreveu: {mensagem}"})
 
-        # Chamada à OpenAI
         print("   ▶ enviando requisição para a OpenAI...")
-        resposta_openai = openai.ChatCompletion.create(
+        resposta_openai = client.chat.completions.create(
             model="gpt-4",
             messages=mensagens,
             temperature=0.7
         )
         print("   ◀ resposta recebida")
 
-        story = resposta_openai.choices[0].message["content"].strip()
+        story = resposta_openai.choices[0].message.content.strip()
         print("   história gerada (100 chars):", story[:100].replace("\n", " "))
 
         return jsonify({'resposta': story}), 200
