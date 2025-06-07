@@ -1,13 +1,8 @@
-# Recriar o arquivo após reset
-from pathlib import Path
-
-main_py_fixed = """
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 import openai
 import os
 import traceback
-import json
 from openai import OpenAIError
 
 app = Flask(__name__)
@@ -32,13 +27,10 @@ def jogar():
 
     try:
         print("▶ chamando /jogar()")
-        raw_data = request.get_data(as_text=True)
-        print("   RAW:", raw_data[:120])
-
-        try:
-            data = json.loads(raw_data) if raw_data else {}
-        except json.JSONDecodeError as e:
-            raise ValueError("JSON inválido") from e
+        
+        # Captura segura dos dados JSON enviados pelo front-end
+        data = request.get_json(force=True, silent=False)
+        print("▶ Dados recebidos:", data)
 
         tema = data.get('tema', '')
         historia = data.get('historia', '')
@@ -61,15 +53,15 @@ def jogar():
 
         # Chamada à OpenAI
         print("   ▶ enviando requisição para a OpenAI...")
-        resposta = openai.ChatCompletion.create(
+        resposta_openai = openai.ChatCompletion.create(
             model="gpt-4",
             messages=mensagens,
             temperature=0.7
         )
         print("   ◀ resposta recebida")
 
-        story = resposta.choices[0].message["content"].strip()
-        print("   história gerada (100 chars):", story[:100].replace("\\n", " "))
+        story = resposta_openai.choices[0].message["content"].strip()
+        print("   história gerada (100 chars):", story[:100].replace("\n", " "))
 
         return jsonify({'resposta': story}), 200
 
@@ -97,8 +89,3 @@ def ping():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
-"""
-
-file_path = Path("/mnt/data/main_corrigido.py")
-file_path.write_text(main_py_fixed)
-file_path.name
