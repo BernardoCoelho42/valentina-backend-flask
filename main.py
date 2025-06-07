@@ -61,7 +61,7 @@ def jogar():
     "Se o jogador enviar mensagem livre, responda como narrador, mas nunca avance a história sem resolução do enigma. "
     "Sempre comece a resposta à escolha do jogador com '✅ Resposta correta!' ou '❌ Resposta errada!', exatamente assim, no início. "
     "Nunca omita esses símbolos. Obedeça a todas essas regras com precisão."
-    “Mantenha os textos narrativos curtos, com no máximo 3 frases por parágrafo, e evite descrições longas ou complexas.”
+    "Mantenha os textos narrativos curtos, com no máximo 3 frases por parágrafo, e evite descrições longas ou complexas."
 )
 
             },
