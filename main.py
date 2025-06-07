@@ -51,7 +51,8 @@ def jogar():
                     "Se o jogador pedir para ligar para o papai, responda com uma dica enigmática e afetuosa — nunca com a resposta. "
                     "Se o jogador enviar mensagem livre, interprete como diálogo, mas nunca avance a narrativa sem que ele resolva o enigma. "
                     "Toda resposta sua deve terminar em um novo enigma ou esperar o próximo comando do jogador. "
-                    "Jamais escreva a história completa de uma vez. Obedeça às regras do sistema. Seja rigoroso."
+                    "Jamais escreva a história completa de uma vez. Obedeça às regras do sistema. Seja rigoroso. "
+                    "Toda vez que o jogador responder, comece sua resposta com '✅ Resposta correta!' ou '❌ Resposta errada!', exatamente assim, no início da resposta. Nunca omita esses símbolos."
                 )
             },
             {"role": "user", "content": f"Tema: {tema}"},
